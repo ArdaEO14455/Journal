@@ -1,17 +1,13 @@
 import React, { useState } from "react"
 import { useParams } from "react-router-dom"
 
-const NewEntry = ({ entries, setEntries }) => {
-  const { category , useNavigate} = useParams()
+const NewEntry = ({ addEntry }) => {
+  const { category } = useParams()
   const [content, setContent] = useState('')
-  const nav = useNavigate()
 
   function submit(e) {
     e.preventDefault()
-    // Add a new entry
-    const newEntry = { category, content }
-    setEntries([...entries, newEntry])
-    nav('/')
+    addEntry(category, content)
   }
 
   return (

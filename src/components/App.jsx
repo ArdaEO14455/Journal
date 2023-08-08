@@ -1,43 +1,63 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Home from "./Home"
 import CategorySelection from "./CategorySelection"
 import NewEntry from "./NewEntry"
-import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"
+import { Routes, Route, useParams, useNavigate } from "react-router-dom"
 import NavBar from "./NavBar"
 import ShowEntry from "./ShowEntry"
 
-const seedEntries = [
-  { category: 'Food', content: 'Pizza is Yummy'},
-  { category: 'Coding', content: 'Coding is fun!'},
-  { category: 'Gaming', content: 'Skyrim is for the Nords'}
-]
+// const seedEntries = [
+//   { category: "Food", content: "Pizza is yummy!" },
+//   { category: "Coding", content: "Coding is fun!" },
+//   { category: "Gaming", content: "Skyrim is for the Nords!" },
+// ]
 
 const App = () => {
-  const [entries, setEntries] = useState(seedEntries)
+  const nav = useNavigate()
+  const [entries, setEntries] = useState([])
+  // console.log(`id: ${id}`)
 
-  //HOC (Higher-Order Component)
+  useEffect( () => {
+    (async () => { //async functions return a promise, but they cannot be used in useEffect, so we need to wrap it in a function
+    const res = await fetch('http://localhost:4002/entries') //taken from port number from API
+    const data = await res.json() //parse json data
+    setEntries(data)
+  })()//set the entries used
+  // getEntries()
+  }, [])
+  // HOC (higher-order component)
   function ShowEntryWrapper() {
     const { id } = useParams()
-    return <ShowEntry entry={entries[id]}/>
+    return <ShowEntry entry={entries[id]} />
+  }
+
+  async function addEntry(category, content) {
+    const id = entries.length
+    // Add a new entry
+      const returnedEntry= await fetch('http://localhost:4002/entries', {
+        method: 'POST',
+        body: JSON.stringify({ category, content }),
+        headers: { "Content-Type": "application/json" }
+      })
+      //we do a fetch with a POST request, passing in the category and content, and putting the returned value into the variable returnedEntry
+
+    const newEntry = { category, content }
+    setEntries([...entries, await returnedEntry.json()])
+    nav(`/entry/${id}`)
   }
 
   return (
     <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home entries={entries}/>} />
-          <Route path="/category" element={<CategorySelection />} />
-          <Route path="/entry">
-            <Route path=":id" element={<ShowEntryWrapper />}/>
-            <Route path="new/:category" element={<NewEntry entries={entries} setEntries={setEntries} />} />
-          </Route>
-          <Route path="*" element={<h3>Page not found</h3>} />
-        </Routes>
-      </BrowserRouter>
-      {/* <Home />
-      <CategorySelection />
-      <NewEntry /> */}
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home entries={entries} />} />
+        <Route path="/category" element={<CategorySelection />} />
+        <Route path="/entry">
+          <Route path=":id" element={<ShowEntryWrapper />} />
+          <Route path="new/:category" element={<NewEntry addEntry={addEntry} />} />
+        </Route>
+        <Route path="*" element={<h3>Page not found</h3>} />
+      </Routes>
     </>
   )
 }
