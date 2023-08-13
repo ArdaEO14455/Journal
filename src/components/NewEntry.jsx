@@ -3,21 +3,21 @@ import { useParams } from "react-router-dom"
 
 const NewEntry = ({ addEntry }) => {
   const { category } = useParams()
-  const [content, setContent] = useState('')
+  const [entry, setEntry] = useState('')
 
-  function submit(e) {
-    e.preventDefault()
-    addEntry(category, content)
+  function submit(evt) {
+    evt.preventDefault()
+    addEntry(category, entry)
   }
 
   return (
     <>
-      <h3>New entry in {category} category</h3>
-      <form className="container" onSubmit={submit}>
+      <h2>New Entry in {category} category</h2>
+      <form onSubmit={submit} className="container">
         <div>
-          <textarea value={content} onChange={e => setContent(e.target.value)} className="form-control" rows="8"></textarea>
+          <textarea value={entry} onChange={(evt) => setEntry(evt.target.value)} rows="10" className="form-control"></textarea>
         </div>
-        <button className="btn btn-primary mt-3">Create Entry</button>
+        <button className="btn btn-primary mt-2">Create Entry</button>
       </form>
     </>
   )

@@ -76,3 +76,11 @@ export default App
 //each individual jsx file other than app.jsx is where we do the actual modification of the HTML
 // you can create sub routes by nesting a Route within a route, but when specifying the path, you need to remove the '/' in the sub route
 // the last route should be <Route path='*' element{404 page(needs to be imported or created in a separate file)}>. the '*' is the 'catch-all' path, ie if the URL doesnt match any specified path, the page will render the route with the '*' path. 
+
+// Unit Testing
+// Test Framework: Vitest is the framework that allows us to do the test
+// Testing library - a library of tests executeed by Vitest
+// when installing vitest use 'npm i -D', because -D means its installed as a dev tool, rather than as a part of the final software. this is because its not required in the final version, as it is just for unit testing
+// when installing vitest, be sure to use 'jsdom', meaning that its used in a virtual browser environment
+// in the command, we ensure we install the different testing components: react (includes hooks) user-inputs (use-event), and glue it all together (jest-dom)
+// npm i -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom

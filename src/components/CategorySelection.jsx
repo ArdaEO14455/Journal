@@ -15,7 +15,7 @@ const CategorySelection = () => {
     
     return (
     <>
-        <h2>Please select a category</h2>
+        <h3>Please select a category:</h3>
         <ul>
             {categories.map(cat => (
             <li key={cat._id}>
