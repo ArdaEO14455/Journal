@@ -6,7 +6,7 @@ const CategorySelection = () => {
     
     useEffect( () => {
         const getCats = async () => {
-        const res = await fetch(`${import.meta.env.VITE_API_HOST/categories') //taken from port number from API
+        const res = await fetch(`${import.meta.env.VITE_API_HOST}/categories`) //taken from port number from API
         const data = await res.json() //parse json data
         setCategories(data)
     } //set the entries used
