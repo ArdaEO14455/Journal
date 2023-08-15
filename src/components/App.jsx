@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect( () => {
     (async () => { //async functions return a promise, but they cannot be used in useEffect, so we need to wrap it in a function
-    const res = await fetch('http://localhost:4002/entries') //taken from port number from API
+    const res = await fetch(`${import.meta.env.VITE_API_HOST/entries') //taken from port number from API
     const data = await res.json() //parse json data
     setEntries(data)
   })()//set the entries used
@@ -34,7 +34,7 @@ const App = () => {
   async function addEntry(category, content) {
     const id = entries.length
     // Add a new entry
-      const returnedEntry= await fetch('http://localhost:4002/entries', {
+      const returnedEntry= await fetch(`${import.meta.env.VITE_API_HOST/entries', {
         method: 'POST',
         body: JSON.stringify({ category, content }),
         headers: { "Content-Type": "application/json" }
